@@ -1,14 +1,12 @@
 'use client'
 
-import { useState } from 'react'
 import { useSuperheroes } from '@/queries/useSuperheroes'
+import { usePagination } from '@/hooks/usePagination'
 import HeroCard from '@/components/HeroCard'
 import PaginationControls from '@/components/Pagination'
 
 export default function Home() {
-  const [page, setPage] = useState(1)
-  const [size, setSize] = useState(10)
-
+  const { page, size, onPageChange, onSizeChange } = usePagination()
   const { data, isLoading } = useSuperheroes(page, size)
 
   if (isLoading) return <p>Loading...</p>
@@ -28,11 +26,8 @@ export default function Home() {
         page={page}
         size={size}
         lastPage={data?.lastPage || 1}
-        onPageChange={setPage}
-        onSizeChange={(newSize) => {
-          setSize(newSize)
-          setPage(1)
-        }}
+        onPageChange={onPageChange}
+        onSizeChange={onSizeChange}
       />
     </div>
   )
